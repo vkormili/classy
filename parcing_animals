@@ -39,7 +39,7 @@ linklist = []
 soup = BeautifulSoup(requests.get(url).text, "lxml")
 while soup.css.select('a', class_=None, title_='"Категория:Животные по алфавиту">Следующая страница'):
     linkinator(url, linklist)
-    url = soup.css.select('a', class_=None, title_='"Категория:Животные по алфавиту">Следующая страница').get('href')
+    url = soup.css.select('a', class_=None, title_='"Категория:Животные по алфавиту">Следующая страница').get('href'))
 
 with open('animals.csv', 'w', encoding='utf8') as file:
     writer = csv.writer(file)
