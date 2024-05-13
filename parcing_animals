@@ -1,0 +1,47 @@
+from bs4 import BeautifulSoup
+import requests
+import csv
+
+
+def linkinator(url,
+               linklist):  # часть 1, где объекты со страницы собираются в список, а мы пересматриваем финеса и ферба
+    page = requests.get(url)
+    # print(page.status_code)
+    soup = BeautifulSoup(page.text, "lxml")
+    languages = list(soup.findAll('a', class_=None, id_=None))
+    flag = False
+    for link in languages:
+        if flag and link.get('title') != 'Категория:Животные по алфавиту':
+            linklist.append(link.get('href'))
+            # print(link.get('title'), link.get('href'))
+        if link.get('title') == 'Категория:Животные по алфавиту':
+            if not flag:
+                flag = True
+            else:
+                flag = False
+    return linklist
+
+
+# часть 2, где со страницы выгружаются данные о классификации, а мы беспокоимся о формате хранения данных
+def classificater_animals(link):
+    page = requests.get(link)
+    soup = BeautifulSoup(page.text, "lxml")
+    animals = soup.css.select('div class="ts-Taxonomy-rang-name" > a')
+
+    sexlevelsofclassification = [0, 0, 0, 0, 0, 0]
+    return sexlevelsofclassification
+
+
+# часть 3, где программа последовательно проходит по всем страницам и выгружает всё, что нужно, а мы радуемся тому, как оно работает
+
+url = 'https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%96%D0%B8%D0%B2%D0%BE%D1%82%D0%BD%D1%8B%D0%B5_%D0%BF%D0%BE_%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%D1%83'
+linklist = []
+soup = BeautifulSoup(requests.get(url).text, "lxml")
+while soup.css.select('a', class_=None, title_='"Категория:Животные по алфавиту">Следующая страница'):
+    linkinator(url, linklist)
+    url = soup.css.select('a', class_=None, title_='"Категория:Животные по алфавиту">Следующая страница').get('href')
+
+with open('animals.csv', 'w', encoding='utf8') as file:
+    writer = csv.writer(file)
+    for link in linklist:
+        writer.writerow(classificater_animals(link))
