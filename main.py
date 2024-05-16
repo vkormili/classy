@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTextEdit, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel
 from PyQt5.QtCore import Qt
 
 
@@ -78,11 +78,10 @@ class Game(QWidget):
         self.progressBar.setMinimum(0)
         self.progressBar.setValue(0)
 
-        self.guess_list = QTextEdit()
-
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             user_guess = self.lineEdit.text()
+            self.textBrowser.insertPlainText(user_guess + '\n')
 
     def back(self):
         ex.show()
