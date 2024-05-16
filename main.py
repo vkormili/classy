@@ -1,69 +1,97 @@
-from bs4 import BeautifulSoup
-import requests
-import pandas as pd
+import sys
+from PyQt5 import uic
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTextEdit, QLabel
+from PyQt5.QtCore import Qt
 
 
-def linkinator(anotherurl):  # часть 1, где объекты со страницы собираются в список, а мы пересматриваем финеса и ферба
-    anotherlinkslist = []
-    soup = BeautifulSoup(requests.get(anotherurl).text, "lxml")
-    languages = list(soup.findAll('a', class_=None, id_=None))
-    j = 0
-    for link in languages:
-        if j == 4 or j == 5:
-            anotherlinkslist.append(link.get('href'))
-            # print(link.get('title'), link.get('href'))
-        if link.get('title') == 'Категория:Животные по алфавиту':
-            j += 1
-    return anotherlinkslist
+class StartPage(QMainWindow):
+    # инициализация стартовой страницы
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('start_page.ui', self)
+        # ставим заголовок
+        self.setWindowTitle('Classy')
+        # подключаем кнопки
+        self.anim_btn.clicked.connect(self.start)
+        self.plant_btn.clicked.connect(self.start)
+        self.lang_btn.clicked.connect(self.start)
+
+    def start(self):
+        # при нажатии на кнопку создаётся новое окно и передаётся выбранный режим
+        if self.sender().text() == 'Животные':
+            self.second_form = Game(self, 'anim')
+        elif self.sender().text() == 'Растения':
+            self.second_form = Game(self, 'plant')
+        elif self.sender().text() == 'Языки':
+            self.second_form = Game(self, 'lang')
+        self.second_form.show()
+        ex.close()
 
 
-def determinder(line, word):
-    line_check = list(line.split(word)[1])
-    j = 1
-    answer = line_check[0]
-    while ord(line_check[j]) >= 1072:
-        answer += line_check[j]
-        j += 1
-    return answer
+class Game(QWidget):
+    # инициализация игрового интерфейса
+    def __init__(self, *args):
+        super().__init__()
+        uic.loadUi('game_interface.ui', self)
+        self.setWindowTitle('Classy')
+        self.mode = args[1]
+        # в зависимости от режима наполняем интерфейс
+        if self.mode == 'anim':
+            self.lineEdit.insert('животного')
+            # создаем название уровней генеалогии
+            type_label = QLabel('тип')
+            class_label = QLabel('класс')
+            otrad_label = QLabel('отряд')
+            family_label = QLabel('семья')
+            rod_label = QLabel('род')
+            vid_label = QLabel('вид')
+            self.progressBar.setMaximum(6)
+            # добавляем на экран
+            self.levels.addWidget(type_label)
+            self.levels.addWidget(class_label)
+            self.levels.addWidget(otrad_label)
+            self.levels.addWidget(family_label)
+            self.levels.addWidget(rod_label)
+            self.levels.addWidget(vid_label)
+        elif self.mode == 'plant':
+            self.lineEdit.insert('растения')
+            # создаем название уровней генеалогии
+            type_label = QLabel('тип')
+            class_label = QLabel('класс')
+            otrad_label = QLabel('отряд')
+            family_label = QLabel('семья')
+            rod_label = QLabel('род')
+            vid_label = QLabel('вид')
+            self.progressBar.setMaximum(6)
+            # добавляем на экран
+            self.levels.addWidget(type_label)
+            self.levels.addWidget(class_label)
+            self.levels.addWidget(otrad_label)
+            self.levels.addWidget(family_label)
+            self.levels.addWidget(rod_label)
+            self.levels.addWidget(vid_label)
+        elif self.mode == 'lang':
+            self.lineEdit.insert('языка')
+
+        self.back_btn.clicked.connect(self.back)
+
+        self.progressBar.setMinimum(0)
+        self.progressBar.setValue(0)
+
+        self.guess_list = QTextEdit()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+            user_guess = self.lineEdit.text()
+
+    def back(self):
+        ex.show()
+        self.close()
 
 
-def classificator(link):
-    turtle = 'https://ru.wikipedia.org/wiki/%D0%90%D0%B2%D1%81%D1%82%D1%80%D0%B0%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B0' \
-              '%D1%8F_%D0%B7%D0%BC%D0%B5%D0%B8%D0%BD%D0%BE%D1%88%D0%B5%D1%8F%D1%8F_%D1%87%D0%B5%D1%80%D0%B5%D0%BF%D0' \
-              '%B0%D1%85%D0%B0 '
-    if link == turtle:
-        return 0
-    name = pd.read_html(link, flavor='lxml')[0].columns.values[0]
-    print(name)
-    data = pd.read_html(link, flavor='lxml')[0][name][2]
-    if 'Вид:' not in data or '†' in data:
-        return [0, 0, 0, 0, 0, 0]
-    species = data.split('Вид:')[1]
-    genus = determinder(data, 'Род:')
-    family = determinder(data, 'Семейство:')
-    order = determinder(data, 'Отряд:')
-    class_y = determinder(data, 'Класс:')
-    phylum = determinder(data, 'Тип:')
-    return [species, genus, family, order, class_y, phylum]
 
-
-# print(classificator('https://ru.wikipedia.org/wiki/%D0%90%D0%B2%D1%81%D1%82%D1%80%D0%B0%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9_%D0%BE%D1%80%D0%BB%D1%8F%D0%BA'))
-# print(classificator('https://ru.wikipedia.org/wiki/%D0%90%D0%B0%D1%80%D0%B4%D0%BE%D0%BD%D0%B8%D0%BA%D1%81'))
-# print(classificator('https://ru.wikipedia.org/wiki/%D0%90%D0%B2%D1%80%D0%BE%D1%80%D1%8B'))
-# print(classificator('https://ru.wikipedia.org/wiki/%D0%90%D0%B2%D1%81%D1%82%D1%80%D0%B0%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_%D0%BA%D0%BE%D1%80%D0%B0%D0%BB%D0%BB%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BA%D0%BE%D1%88%D0%B0%D1%87%D1%8C%D1%8F_%D0%B0%D0%BA%D1%83%D0%BB%D0%B0'))
-
-url = 'https://ru.wikipedia.org/w/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%96%D0%B8' \
-      '%D0%B2%D0%BE%D1%82%D0%BD%D1%8B%D0%B5_%D0%BF%D0%BE_%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%D1%83&from=%D0%90 '
-
-animals = pd.DataFrame(columns=['species', 'genus', 'family', 'order', 'class_y', 'phylum'])
-while url != 'stop':
-    linkslist = linkinator(url)
-    for i in range(200):
-        animals.append(classificator('https://ru.wikipedia.org' + linkslist[i]))
-    url = 'https://ru.wikipedia.org' + linkslist[-1]
-    if url == 'https://ru.wikipedia.org/w/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0' \
-              '%96%D0%B8%D0%B2%D0%BE%D1%82%D0%BD%D1%8B%D0%B5_%D0%BF%D0%BE_%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82' \
-              '%D1%83&from=%D0%AF%D1%8E':
-        break
-
-animals.to_csv()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = StartPage()
+    ex.show()
+    sys.exit(app.exec_())
