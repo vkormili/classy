@@ -5,7 +5,9 @@ import numpy as np
 import csv
 
 
-def linkinator(anotherurl):  # часть 1, где объекты со страницы собираются в список, а мы пересматриваем финеса и ферба
+# функция, позволяющая извлекать со страницы ссылки на животных + последняя ссылка в списке на следующую страницу
+# возвращается список из ссылок на животных со страницы с адресом-аргументом
+def linkinator(anotherurl):
     anotherlinkslist = []
     soup = BeautifulSoup(requests.get(anotherurl).text, "lxml")
     languages = list(soup.findAll('a', class_=None, id_=None))
@@ -18,7 +20,7 @@ def linkinator(anotherurl):  # часть 1, где объекты со стра
             j += 1
     return anotherlinkslist
 
-
+# функция, которая выделяет название конкретного уровня и возвращает это название
 def determinder(line, word):
     line_check = list(line.split(word)[1])
     j = 1
@@ -34,12 +36,15 @@ def determinder(line, word):
     return answer
 
 
+# функция, которая "достает" классификацию со страницы животного
+# возвращает список из 6 "уровней" классификации, если в википедии какой-то уровень пропущен, на его месте 0
 def classificator(link):
     print(link)
     name = pd.read_html(link, flavor='lxml')[0].columns.values[0]
     if type(name) == np.int64:
-        if 'Unnamed: 0' in pd.read_html(link, flavor='lxml', header=1, index_col=1)[name]:
-            data = pd.read_html(link, flavor='lxml', header=1, index_col=1)[name]['Unnamed: 0'][1]
+        # print(pd.read_html(link, flavor='lxml', header=1))
+        if 'Unnamed: 0' in pd.read_html(link, flavor='lxml', header=1)[name]:
+            data = pd.read_html(link, flavor='lxml', header=1)[name]['Unnamed: 0'][1]
         else:
             return [link, 0, 0, 0, 0, 0]
     else:
@@ -81,8 +86,6 @@ def classificator(link):
         phylum = 0
     return [species, genus, family, order, class_y, phylum]
 
-
-# print(classificator('https://ru.wikipedia.org/wiki/%D0%91%D0%B0%D0%BD%D0%B0%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9_%D0%BB%D0%B8%D1%81%D1%82%D0%BE%D0%BD%D0%BE%D1%81'))
 
 url = 'https://ru.wikipedia.org/w/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%96%D0%B8' \
       '%D0%B2%D0%BE%D1%82%D0%BD%D1%8B%D0%B5_%D0%BF%D0%BE_%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%D1%83&from=%D0%90 '
