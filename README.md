@@ -20,3 +20,6 @@ _feel the classification_
 * Попова Юлия 233
 * Зайцева Елизавета 232
 ## Ресурсы
+* https://github.com/glottolog/glottolog-cldf/blob/master/cldf/languages.csv
+* https://habr.com/ru/articles/544828/
+* https://habr.com/ru/companies/ruvds/articles/494720/
