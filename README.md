@@ -1,5 +1,5 @@
 # classy
-_feel the classification_
+_"feel the classification!"_
 
 ## Описание
 ### Идея
