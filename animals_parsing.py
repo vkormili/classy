@@ -39,7 +39,7 @@ def determinder(line, word):
 # функция, которая "достает" классификацию со страницы животного
 # возвращает список из 6 "уровней" классификации, если в википедии какой-то уровень пропущен, на его месте 0
 def classificator(link):
-    print(link)
+    #print(link)
     name = pd.read_html(link, flavor='lxml')[0].columns.values[0]
     if type(name) == np.int64:
         # print(pd.read_html(link, flavor='lxml', header=1))
@@ -68,19 +68,19 @@ def classificator(link):
         genus = determinder(data, 'Род:')
     else:
         genus = 0
-    if '' in data:
+    if 'Семейство:' in data:
         family = determinder(data, 'Семейство:')
     else:
         family = 0
-    if '' in data:
+    if 'Отряд:' in data:
         order = determinder(data, 'Отряд:')
     else:
         order = 0
-    if '' in data:
+    if 'Класс:' in data:
         class_y = determinder(data, 'Класс:')
     else:
         class_y = 0
-    if '' in data:
+    if 'Тип:' in data:
         phylum = determinder(data, 'Тип:')
     else:
         phylum = 0
