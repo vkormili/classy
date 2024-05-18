@@ -36,7 +36,7 @@ cd classy/main_programm
 pip install -r requirements.txt
 python main.py
 ```
-Если у вас по какой-то причине не скачалась какая-либо библиотека из тех, что содержатся в requirements.txt, можете попробовать скачать их самостоятельно. Например, с помощью пайчарма: Меню — Settings — Project — Python Interpreter (Project Interpreter)
+Если у вас по какой-то причине не скачалась какая-либо библиотека из тех, что содержатся в requirements.txt, можете попробовать скачать их самостоятельно. Например, с помощью пайчарма: Меню — Settings — Project — Python Interpreter (Project Interpreter).
 Или отсюда с помощью pip, если проблема именно с PyQt5
 ```python
 -m pip install PyQt5
