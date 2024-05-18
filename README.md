@@ -14,7 +14,7 @@ _"feel the classification!"_
 
 ## Установка и использование
 
-Основные библиотеки:
+Воспользуйтесь pip, чтобы установить следующее:
 ```python
 pip install sys
 pip install PyQt5
