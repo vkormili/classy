@@ -93,7 +93,7 @@ class Game(QWidget):
 
     def check(self):
         user_guess = self.sender().text()
-        self.textBrowser.insertPlainText('\n' + user_guess + '\n')
+        self.textBrowser.insertPlainText(user_guess + '\n')
 
     def back(self):
         ex.show()
