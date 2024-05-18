@@ -22,7 +22,10 @@ def asking(mode):
 
 
 # достаем характеристику вида/языка из таблицы
-def guess(userguess, mode):
+def guess(userguess, mode):    
+    anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
+    lang_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+    plant_base = open('probe.csv', 'r', newline='', encoding='utf-8')
     if mode == 'anim':
         base = anim_base
     if mode == 'plant':
