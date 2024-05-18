@@ -132,7 +132,7 @@ class Game(QWidget):
             self.search.removeWidget(widget)
         # поиск регулярными выражениями по запросу
         to_find = self.lineEdit.text()
-        all_items = get_list_items('probe.csv')
+        all_items = get_list_items('animals.csv')
         results = []
         for item in all_items:
             try:

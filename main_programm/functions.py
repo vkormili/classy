@@ -2,7 +2,7 @@ import random
 import csv
 
 
-anim_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
 lang_base = open('probe.csv', 'r', newline='', encoding='utf-8')
 plant_base = open('probe.csv', 'r', newline='', encoding='utf-8')
 
@@ -16,6 +16,7 @@ def asking(mode):
     if mode == 'lang':
         base = lang_base
     ask = list(map(lambda x: x.strip(), random.choice(base.readlines()).split(';')))
+    print(ask)
     return ask
 
 
@@ -38,7 +39,7 @@ def guess(userguess, mode):
 def proxi(a: list, g:str, mode):
     # функция проверяет, насколько близко пользователь угадал
     proximity = 0
-    anim_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+    anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
     reader = csv.reader(anim_base, delimiter=';')
     for row in reader:
         if row[0] == g:
