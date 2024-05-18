@@ -35,7 +35,7 @@ def guess(userguess, mode):
     return res
 
 
-def proxi(a: list, g:str, mode) -> type(int, str):
+def proxi(a: list, g:str, mode):
     # функция проверяет, насколько близко пользователь угадал
     proximity = 0
     anim_base = open('probe.csv', 'r', newline='', encoding='utf-8')
