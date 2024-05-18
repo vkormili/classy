@@ -7,7 +7,7 @@ import functions
 
 
 def get_list_items(filename: str) -> list:
-    f = open(filename, 'r')
+    f = open(filename, 'r', newline='', encoding='utf-8')
     reader = csv.reader(f, delimiter=';')
     lst = []
     for row in reader:
@@ -102,7 +102,15 @@ class Game(QWidget):
     def check(self):
         user_guess = self.sender().text()
         self.textBrowser.insertPlainText(user_guess + '\n')
-        print(functions.proxi(self.answer, user_guess))
+        print(self.answer)
+        print(user_guess)
+        ball, level = functions.proxi(self.answer, user_guess, self.mode)
+        if self.progressBar.value() < ball:
+            self.guess_status.setText('Угадан уровень генеалогии: ' + level)
+            self.progressBar.setValue(ball)
+            if self.progressBar.value() == self.progressBar.maximum():
+                self.guess_status.setText('ура! ты победил(а)!')
+
 
     def back(self):
         ex.show()

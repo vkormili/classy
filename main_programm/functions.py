@@ -1,13 +1,12 @@
 import random
 import csv
-import pandas as pd
 
 # здесь можно все эти тройки прописывать в одной функции, но я не понимаю как из интерфейса вытащить что-то в переменную
 # везде две версии, общая и для каждого мода отдельно
 
-anim_base = open("probe.csv")
-lang_base = open("probe.csv")
-plant_base = open("probe.csv")
+anim_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+lang_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+plant_base = open('probe.csv', 'r', newline='', encoding='utf-8')
 
 # эти инпуты нужно достать из ui
 
@@ -37,13 +36,11 @@ plant_base = open("probe.csv")
 def asking(mode):
     if mode == 'anim':
         base = anim_base
-        ask = random.choice(base.readlines()).split(';')
     if mode == 'plant':
         base = plant_base
-        ask = random.choice(base.readlines()).split(';')
     if mode == 'lang':
         base = lang_base
-        ask = random.choice(base.readlines()).split(';')
+    ask = list(map(lambda x: x.strip(), random.choice(base.readlines()).split(';')))
     return ask
 
 
@@ -94,10 +91,23 @@ def guess(userguess, mode):
 # перезаписываем при каждом заполнении строки
 # g_anim = guess_anim()
 
-def proxi(a, g):
+def proxi(a, g, mode):
     proximity = 0
-    if len(a) == len(g):
+    # if mode == 'anim':
+    #     base = anim_base
+    # if mode == 'plant':
+    #     base = plant_base
+    # if mode == 'lang':
+    #     base = lang_base
+    anim_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+    reader = csv.reader(anim_base, delimiter=';')
+    for row in reader:
+        if row[0] == g:
+            guess_gen = row
+    if len(a) == len(guess_gen):
+        guessed_level = ''
         for level in reversed(range(len(a))):
-            if a[level] == g[level]:
+            if a[level] == guess_gen[level]:
+                guessed_level = a[level]
                 proximity += 1
-    return proximity
+    return proximity, guessed_level
