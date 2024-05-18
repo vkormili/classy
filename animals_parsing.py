@@ -20,6 +20,7 @@ def linkinator(anotherurl):
             j += 1
     return anotherlinkslist
 
+
 # функция, которая выделяет название конкретного уровня и возвращает это название
 def determinder(line, word):
     line_check = list(line.split(word)[1])

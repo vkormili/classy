@@ -1,7 +1,6 @@
 import sys
 from PyQt5 import uic
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton
 import csv
 import re
 
@@ -112,15 +111,10 @@ class Game(QWidget):
                 results.append(re.fullmatch(f'.*{to_find}.*', item)[0])
             except TypeError:
                 pass
-        print(results)
         for result in results[:8]:
             btn_search = QPushButton(result)
             btn_search.clicked.connect(self.check)
             self.search.addWidget(btn_search)
-
-
-
-
 
 
 if __name__ == '__main__':
