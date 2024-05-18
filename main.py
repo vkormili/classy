@@ -1,7 +1,19 @@
 import sys
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel
-from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout
+import csv
+import re
+
+
+def get_list_items(filename: str) -> list:
+    f = open(filename, 'r')
+    reader = csv.reader(f, delimiter=';')
+    lst = []
+    for row in reader:
+        lst.append(row[0])
+    f.close()
+    return lst
 
 
 class StartPage(QMainWindow):
@@ -78,14 +90,36 @@ class Game(QWidget):
         self.progressBar.setMinimum(0)
         self.progressBar.setValue(0)
 
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
-            user_guess = self.lineEdit.text()
-            self.textBrowser.insertPlainText(user_guess + '\n')
+        self.lineEdit.textEdited.connect(self.searching)
+
+    def check(self):
+        user_guess = self.sender().text()
+        self.textBrowser.insertPlainText('\n' + user_guess + '\n')
 
     def back(self):
         ex.show()
         self.close()
+
+    def searching(self):
+        while self.search.count():
+            widget = self.search.takeAt(0).widget()
+            self.search.removeWidget(widget)
+        to_find = self.lineEdit.text()
+        all_items = get_list_items('probe.csv')
+        results = []
+        for item in all_items:
+            try:
+                results.append(re.fullmatch(f'.*{to_find}.*', item)[0])
+            except TypeError:
+                pass
+        print(results)
+        for result in results[:8]:
+            btn_search = QPushButton(result)
+            btn_search.clicked.connect(self.check)
+            self.search.addWidget(btn_search)
+
+
+
 
 
 

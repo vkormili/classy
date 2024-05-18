@@ -1,5 +1,6 @@
 import csv
 from bs4 import BeautifulSoup
+import requests
 
 
 with open('id_languages.csv', newline='') as csvfile:
