@@ -2,27 +2,31 @@ import random
 import csv
 
 
-anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
-lang_base = open('probe.csv', 'r', newline='', encoding='utf-8')
-plant_base = open('probe.csv', 'r', newline='', encoding='utf-8')
-
-
 # загадывает правильный ответ
 def asking(mode):
+    anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
+    lang_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+    plant_base = open('probe.csv', 'r', newline='', encoding='utf-8')
     if mode == 'anim':
         base = anim_base
     if mode == 'plant':
         base = plant_base
     if mode == 'lang':
         base = lang_base
-    basereader csv.reader(base)
-    ask = list(map(lambda x: x.strip(), random.choice(list(basereader)).split(';')))
-    print(ask)
+    basereader = csv.reader(base, delimiter=';')
+    animals = []
+    for row in basereader:
+        animals.append(row)
+    ask = random.choice(animals)
+    # print(ask)
     return ask
 
 
 # достаем характеристику вида/языка из таблицы
-def guess(userguess, mode):    
+def guess(userguess, mode):
+    anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
+    lang_base = open('probe.csv', 'r', newline='', encoding='utf-8')
+    plant_base = open('probe.csv', 'r', newline='', encoding='utf-8')
     if mode == 'anim':
         base = anim_base
     if mode == 'plant':
@@ -42,7 +46,6 @@ def proxi(a: list, g:str, mode):
     proximity = 0
     anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
     reader = csv.reader(anim_base, delimiter=';')
-    anim_base.close()
     for row in reader:
         if row[0] == g:
             guess_gen = row
