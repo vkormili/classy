@@ -34,7 +34,7 @@ pip install re
 Чтобы запустить программу, следует скачать файлы из папки main_programm.
 ```python
 git clone https://github.com/PolinaHitrun/classy/tree/main.git
-cd 
+cd classy/main_programm
 pip install -r requirements.txt
 start "" python -m uvicorn api:app --reload 
 start "" python -m http.server -d web 80 
