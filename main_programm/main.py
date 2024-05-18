@@ -3,6 +3,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton
 import csv
 import re
+import functions
 
 
 def get_list_items(filename: str) -> list:
@@ -46,6 +47,8 @@ class Game(QWidget):
         uic.loadUi('game_interface.ui', self)
         self.setWindowTitle('Classy')
         self.mode = args[1]
+        self.answer = functions.asking(self.mode)
+
         # в зависимости от режима наполняем интерфейс
         if self.mode == 'anim':
             self.lineEdit.insert('животного')
@@ -64,6 +67,9 @@ class Game(QWidget):
             self.levels.addWidget(family_label)
             self.levels.addWidget(rod_label)
             self.levels.addWidget(vid_label)
+
+            self.guess_status.setText(self.guess_status.text() + ' царство')
+
         elif self.mode == 'plant':
             self.lineEdit.insert('растения')
             # создаем название уровней генеалогии
@@ -81,8 +87,10 @@ class Game(QWidget):
             self.levels.addWidget(family_label)
             self.levels.addWidget(rod_label)
             self.levels.addWidget(vid_label)
-        elif self.mode == 'lang':
-            self.lineEdit.insert('языка')
+
+            self.guess_status.setText(self.guess_status.text() + ' царство')
+        # elif self.mode == 'lang':
+        #     self.lineEdit.insert('языка')
 
         self.back_btn.clicked.connect(self.back)
 
@@ -94,6 +102,7 @@ class Game(QWidget):
     def check(self):
         user_guess = self.sender().text()
         self.textBrowser.insertPlainText(user_guess + '\n')
+        print(functions.proxi(self.answer, user_guess))
 
     def back(self):
         ex.show()
