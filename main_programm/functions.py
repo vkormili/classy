@@ -16,6 +16,7 @@ def asking(mode):
     if mode == 'lang':
         base = lang_base
     ask = list(map(lambda x: x.strip(), random.choice(base.readlines()).split(';')))
+    close(base)
     print(ask)
     return ask
 
