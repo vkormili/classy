@@ -12,11 +12,14 @@ def linkinator(anotherurl):
     soup = BeautifulSoup(requests.get(anotherurl).text, "lxml")
     languages = list(soup.findAll('a', class_=None, id_=None))
     j = 0
+    m = 0
     for link in languages:
-        if j == 4 or j == 5:
+        if j == 1:
+            m += 1
             anotherlinkslist.append(link.get('href'))
-            # print(link.get('title'), link.get('href'))
-        if link.get('title') == 'Категория:Животные по алфавиту':
+            if m == 202:
+                break
+        if link.get('title') == 'Категория:Растения по алфавиту':
             j += 1
     return anotherlinkslist
 
@@ -39,20 +42,20 @@ def determinder(line, word):
 # функция, которая "достает" классификацию со страницы растения
 # возвращает список из 6 "уровней" классификации, если в википедии какой-то уровень пропущен, на его месте 0
 def classificator(link):
-    #print(link)
+    print(link)
     name = pd.read_html(link, flavor='lxml')[0].columns.values[0]
     if type(name) == np.int64:
         # print(pd.read_html(link, flavor='lxml', header=1))
         if 'Unnamed: 0' in pd.read_html(link, flavor='lxml', header=1)[name]:
             data = pd.read_html(link, flavor='lxml', header=1)[name]['Unnamed: 0'][1]
         else:
-            return [link, 0, 0, 0, 0, 0]
+            return [0, 0, 0, 0, 0, 0]
     else:
         data_0 = pd.read_html(link, flavor='lxml')[0][name]
         j = 0
         while j < len(data_0):
             if type(data_0[j]) != float:
-                if 'Домен:ЭукариотыЦарство:Животные' in data_0[j]:
+                if 'Домен:ЭукариотыЦарство:Растения' in data_0[j]:
                     break
             j += 1
         if j >= len(data_0):
@@ -72,24 +75,16 @@ def classificator(link):
         family = determinder(data, 'Семейство:')
     else:
         family = 0
-    if 'Отряд:' in data:
+    if 'Порядок:' in data:
         order = determinder(data, 'Отряд:')
     else:
         order = 0
-    if 'Класс:' in data:
-        class_y = determinder(data, 'Класс:')
-    else:
-        class_y = 0
-    if 'Тип:' in data:
-        phylum = determinder(data, 'Тип:')
-    else:
-        phylum = 0
     return [species, genus, family, order, class_y, phylum]
 
-
-url = 'https://ru.wikipedia.org/w/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%A0%D0%B0' \
-      '%D1%81%D1%82%D0%B5%D0%BD%D0%B8%D1%8F_%D0%BF%D0%BE_%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%D1%83&from=%D0%90 '
+url = 'https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%A0%D0%B0%D1%81%D1%82%D0%B5%D0%BD%D0%B8%D1%8F_%D0%BF%D0%BE_%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%D1%83'
+url = 'https://ru.wikipedia.org/w/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%A0%D0%B0%D1%81%D1%82%D0%B5%D0%BD%D0%B8%D1%8F_%D0%BF%D0%BE_%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%D1%83&from=%D0%90'
 flag = True
+
 
 f = open('plants.csv', 'w', encoding='utf-8')
 
@@ -105,3 +100,4 @@ while flag:
     url = 'https://ru.wikipedia.org' + linkslist[-1]
 
 f.close()
+
