@@ -15,14 +15,14 @@ def asking(mode):
         base = plant_base
     if mode == 'lang':
         base = lang_base
-    ask = list(map(lambda x: x.strip(), random.choice(base.readlines()).split(';')))
-    close(base)
+    basereader csv.reader(base)
+    ask = list(map(lambda x: x.strip(), random.choice(list(basereader)).split(';')))
     print(ask)
     return ask
 
 
 # достаем характеристику вида/языка из таблицы
-def guess(userguess, mode):
+def guess(userguess, mode):    
     if mode == 'anim':
         base = anim_base
     if mode == 'plant':
