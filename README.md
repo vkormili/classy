@@ -29,7 +29,7 @@ _"feel the classification!"_
 ## Установка и использование
 Потребуется версия python >= 3.9
 ### Как скачать
-Чтобы запустить программу, следует скачать файлы из папки main_programm и запустить файл main.py или в командной строке выполнить следующие команды:
+Чтобы запустить программу, следует скачать файлы из папки main_programm и запустить файл main.py или выполнить следующие команды:
 ```python
 git clone https://github.com/PolinaHitrun/classy
 cd classy/main_programm
