@@ -33,7 +33,7 @@ pip install re
 
 Чтобы запустить программу, следует скачать файлы из папки main_programm и запустить файл main.py или в командной строке выполнить следующие команды:
 ```python
-git clone https://github.com/PolinaHitrun/classy/tree/main/main_programm
+git clone https://github.com/PolinaHitrun/classy
 cd classy/main_programm
 pip install -r requirements.txt
 python main.py
