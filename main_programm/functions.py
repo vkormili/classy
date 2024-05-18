@@ -41,6 +41,7 @@ def proxi(a: list, g:str, mode):
     proximity = 0
     anim_base = open('animals.csv', 'r', newline='', encoding='utf-8')
     reader = csv.reader(anim_base, delimiter=';')
+    anim_base.close()
     for row in reader:
         if row[0] == g:
             guess_gen = row
