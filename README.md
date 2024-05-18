@@ -31,13 +31,12 @@ pip install re
 ```
 При написании кода также были использованы библиотеки bs4, request, pandas, numpy, но для корректной работы программы их установка необязательна.
 
-Чтобы запустить программу, следует скачать файлы из папки main_programm.
+Чтобы запустить программу, следует скачать файлы из папки main_programm и запустить файл main.py или в командной строке выполнить следующие команды:
 ```python
 git clone https://github.com/PolinaHitrun/classy/tree/main.git
 cd classy/main_programm
 pip install -r requirements.txt
-start "" python -m uvicorn api:app --reload 
-start "" python -m http.server -d web 80 
+python main.py
 ```
 
 
