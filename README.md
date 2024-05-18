@@ -13,6 +13,15 @@ _"feel the classification!"_
 ### Структура репозитория
 
 ## Установка и использование
+
+Основные библиотеки:
+```python
+pip install sys
+pip install PyQt5
+pip install csv
+pip install re
+```
+
 ## Участники
 * Кормилицына Варвара 232
 * Хитрун Полина 233
