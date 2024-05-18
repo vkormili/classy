@@ -55,3 +55,5 @@ python main.py
 * https://github.com/glottolog/glottolog-cldf/blob/master/cldf/languages.csv
 * https://habr.com/ru/articles/544828/
 * https://habr.com/ru/companies/ruvds/articles/494720/
+## Контакт для [обратной] связи
+[@polinahitrun](https://t.me/polinahitrun)
